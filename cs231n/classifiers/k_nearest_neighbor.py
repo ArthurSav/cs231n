@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from past.builtins import xrange
 
@@ -73,7 +74,8 @@ class KNearestNeighbor(object):
         # training point, and store the result in dists[i, j]. You should   #
         # not use a loop over dimension.                                    #
         #####################################################################
-        pass
+
+        dists[i,j] = math.sqrt(math.pow(j-i, 2))
         #####################################################################
         #                       END OF YOUR CODE                            #
         #####################################################################
