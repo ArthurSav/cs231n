@@ -180,7 +180,7 @@ class KNearestNeighbor(object):
       l_unique = np.unique(closest_y, return_counts=True)
 
       # sort occurances in descending order
-      l_sorted = np.argsort(-u_counts[1])
+      l_sorted = np.argsort(-l_unique[1])
 
       # use first result with the most occurances
       y_pred[i] = l_unique[l_sorted[0]]
