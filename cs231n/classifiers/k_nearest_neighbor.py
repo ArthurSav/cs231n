@@ -3,6 +3,7 @@ import numpy as np
 from past.builtins import xrange
 
 
+
 class KNearestNeighbor(object):
   """ a kNN classifier with L2 distance """
 
@@ -162,7 +163,7 @@ class KNearestNeighbor(object):
       k_idx_sorted = dists[i,:].argsort()[:k]
 
       # retrieve labels
-      closest_y = self.y_train(k_idx_sorted)
+      closest_y = self.y_train[k_idx_sorted]
 
       #########################################################################
       # TODO:                                                                 #
@@ -180,6 +181,7 @@ class KNearestNeighbor(object):
 
       # use first result with the most occurances
       y_pred[i] = l_unique[0][l_sorted[0]]
+	
 
       #########################################################################
       #                           END OF YOUR CODE                            #
