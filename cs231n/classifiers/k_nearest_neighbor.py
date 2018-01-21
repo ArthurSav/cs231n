@@ -183,7 +183,7 @@ class KNearestNeighbor(object):
       l_sorted = np.argsort(-l_unique[1])
 
       # use first result with the most occurances
-      y_pred[i] = l_unique[l_sorted[0]]
+      y_pred[i] = l_unique[0][l_sorted[0]]
 
       #########################################################################
       #                           END OF YOUR CODE                            #
