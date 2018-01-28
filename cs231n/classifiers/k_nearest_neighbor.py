@@ -1,7 +1,7 @@
 import math
 import numpy as np
 from past.builtins import xrange
-
+from collections import Counter
 
 
 class KNearestNeighbor(object):
@@ -98,7 +98,7 @@ class KNearestNeighbor(object):
       # Compute the l2 distance between the ith test point and all training #
       # points, and store the result in dists[i, :].                        #
       #######################################################################
-      pass
+      dists[i, :] = np.sqrt(np.sum((self.X_train - X[i, :])**2, axis=1))
       #######################################################################
       #                         END OF YOUR CODE                            #
       #######################################################################
@@ -126,7 +126,7 @@ class KNearestNeighbor(object):
     # HINT: Try to formulate the l2 distance using matrix multiplication    #
     #       and two broadcast sums.                                         #
     #########################################################################
-    pass
+    dists = np.sqrt(np.sum(X**2, axis=1).reshape(num_test, 1) + np.sum(self.X_train**2, axis=1) - 2 * X.dot(self.X_train.T))
     #########################################################################
     #                         END OF YOUR CODE                              #
     #########################################################################
@@ -181,9 +181,8 @@ class KNearestNeighbor(object):
 
       # use first result with the most occurances
       y_pred[i] = l_unique[0][l_sorted[0]]
-	
 
-      #########################################################################
+            #########################################################################
       #                           END OF YOUR CODE                            #
       #########################################################################
 
