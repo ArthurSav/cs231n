@@ -53,7 +53,11 @@ class LinearClassifier(object):
       # Hint: Use np.random.choice to generate indices. Sampling with         #
       # replacement is faster than sampling without replacement.              #
       #########################################################################
-      pass
+
+      idx_sample = np.random.choice(X.shape[0], batch_size) #sample indices
+      X_batch = X[idx_sample]
+      y_batch = y[idx_sample]
+
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
@@ -101,10 +105,10 @@ class LinearClassifier(object):
     #                           END OF YOUR CODE                              #
     ###########################################################################
     return y_pred
-  
+
   def loss(self, X_batch, y_batch, reg):
     """
-    Compute the loss function and its derivative. 
+    Compute the loss function and its derivative.
     Subclasses will override this.
 
     Inputs:
@@ -117,8 +121,29 @@ class LinearClassifier(object):
     - loss as a single float
     - gradient with respect to self.W; an array of the same shape as W
     """
-    pass
+    loss = 0.0
+    dW = np.zeros_like(W)
 
+    N = X.shape[0]
+    C = W.shape[1]
+
+    f = X.dot(W)
+    f -= np.matrix(np.max(f, axis=1)).T
+
+    term1 = - f[np.arange(N), y]
+    sum_j = np.sum(np.exp(f), axis=1)
+    term2 = np.log(sum_j)
+    loss = term1 + term2
+    loss /= N
+    loss += 0.5 * reg * np.sum(W * W)
+
+    coef = np.exp(f) / np.matrix(sum_j).T
+    coef[np.arange(N), y] -= 1
+    dW = X.T.dot(coef)
+    dW /= N
+    dW += reg*W
+
+    return loss, dW
 
 class LinearSVM(LinearClassifier):
   """ A subclass that uses the Multiclass SVM loss function """
@@ -132,4 +157,3 @@ class Softmax(LinearClassifier):
 
   def loss(self, X_batch, y_batch, reg):
     return softmax_loss_vectorized(self.W, X_batch, y_batch, reg)
-
