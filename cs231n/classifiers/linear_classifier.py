@@ -121,29 +121,7 @@ class LinearClassifier(object):
     - loss as a single float
     - gradient with respect to self.W; an array of the same shape as W
     """
-    loss = 0.0
-    dW = np.zeros_like(W)
-
-    N = X.shape[0]
-    C = W.shape[1]
-
-    f = X.dot(W)
-    f -= np.matrix(np.max(f, axis=1)).T
-
-    term1 = - f[np.arange(N), y]
-    sum_j = np.sum(np.exp(f), axis=1)
-    term2 = np.log(sum_j)
-    loss = term1 + term2
-    loss /= N
-    loss += 0.5 * reg * np.sum(W * W)
-
-    coef = np.exp(f) / np.matrix(sum_j).T
-    coef[np.arange(N), y] -= 1
-    dW = X.T.dot(coef)
-    dW /= N
-    dW += reg*W
-
-    return loss, dW
+    pass
 
 class LinearSVM(LinearClassifier):
   """ A subclass that uses the Multiclass SVM loss function """
