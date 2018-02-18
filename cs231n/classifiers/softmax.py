@@ -39,7 +39,7 @@ def softmax_loss_naive(W, X, y, reg):
       correct_score = scores[y[i]]
 
       # normalize scores
-      scores = -= np.max(scores)
+      scores -= np.max(scores)
       correct_score -= np.max(correct_score)
 
       for j in xrange(classes_count):
@@ -49,8 +49,8 @@ def softmax_loss_naive(W, X, y, reg):
           if margin > 0:
               loss += margin
               dW[:, y[i]] -= X[i, :]
-              dW[:, j] = += X[i, :]
-              
+              dW[:, j] += X[i, :]
+
   loss /= train_count
   dW /= train_count
 
