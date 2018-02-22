@@ -31,30 +31,24 @@ def softmax_loss_naive(W, X, y, reg):
   # here, it is easy to run into numeric instability. Don't forget the        #
   # regularization!                                                           #
   #############################################################################
-  train_count = X.shape[0]
-  classes_count = W.shape[1]
-  for i in xrange(train_count):
+  
+  num_classes = W.shape[1]
+  num_train = X.shape[0]
 
-      scores = X[i].dot(W)
-      scores -= np.max(scores)
-      l_scores = np.sum(np.exp(scores))
+  for i in xrange(num_train):
+     scores = X[i].dot(W)
+     scores -= np.max(scores)
+     loss += - scores[y[i]] + np.log(np.sum(np.exp(scores)))
+     for j in xrange(num_classes):
+         softmax_output = np.exp(scores[j])/np.sum(np.exp(scores))
+         if j == y[i]:
+             dW[:,j] += (-1 + softmax_output) *X[i] 
+         else: 
+             dW[:,j] += softmax_output *X[i] 
 
-      l_scores_correct = np.exp(scores[y[i]])
-
-      #loss
-      loss += -np.log(l_scores_correct / l_scores)
-      dW[:, y[i]] += -1 * (l_scores - l_scores_correct / l_scores * X[i])
-
-      for j in xrange(classes_count):
-          if j == y[i]:
-              continue
-          dW[:, j] = np.exp(scores[j]/l_scores*X[i])
-
-  loss /= train_count
-  dW /= train_count
-
-  loss += reg * np.sum(W * W)
-  dW += 2 * reg * W
+  loss /= num_train 
+  loss +=  0.5* reg * np.sum(W * W)
+  dW = dW/num_train + reg* W 
 
   #############################################################################
   #                          END OF YOUR CODE                                 #
